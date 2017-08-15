@@ -1,0 +1,68 @@
+apply plugin: 'com.android.library'
+apply plugin: 'com.neenbedankt.android-apt'
+
+android {
+    compileSdkVersion 26
+    buildToolsVersion "26.0.0"
+
+    defaultConfig {
+        minSdkVersion 19
+        targetSdkVersion 26
+        versionCode 1
+        versionName "1.0"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+
+def dbflow_version = "4.0.5"
+def sqlcipher_version = "3.5.7"
+
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    })
+    compile 'com.android.support:appcompat-v7:26.+'
+    testCompile 'junit:junit:4.12'
+    compile 'com.liulishuo.filedownloader:library:1.6.3'
+
+
+
+    compile 'com.alibaba:fastjson:1.1.61.android'
+
+    //    dbflow
+    apt "com.github.Raizlabs.DBFlow:dbflow-processor:${dbflow_version}"
+
+    // use kapt for kotlin apt if you're a Kotlin user
+//    kapt "com.github.Raizlabs.DBFlow:dbflow-processor:${dbflow_version}"
+
+    compile "com.github.Raizlabs.DBFlow:dbflow-core:${dbflow_version}"
+    compile "com.github.Raizlabs.DBFlow:dbflow:${dbflow_version}"
+
+    // sql-cipher database encryption (optional)
+    compile "com.github.Raizlabs.DBFlow:dbflow-sqlcipher:${dbflow_version}"
+    compile "net.zetetic:android-database-sqlcipher:${sqlcipher_version}@aar"
+
+    // kotlin extensions
+//    compile "com.github.Raizlabs.DBFlow:dbflow-kotlinextensions:${dbflow_version}"
+
+    // RXJava 1 support
+//    compile "com.github.Raizlabs.DBFlow:dbflow-rx:${dbflow_version}"
+
+    // RXJava 1 Kotlin Extensions Support
+//    compile "com.github.Raizlabs.DBFlow:dbflow-rx-kotlinextensions:${dbflow_version}"
+
+    // RXJava 2 support
+//    compile "com.github.Raizlabs.DBFlow:dbflow-rx2:${dbflow_version}"
+
+    // RXJava 2 Kotlin Extensions Support
+//    compile "com.github.Raizlabs.DBFlow:dbflow-rx2-kotlinextensions:${dbflow_version}"
+}
