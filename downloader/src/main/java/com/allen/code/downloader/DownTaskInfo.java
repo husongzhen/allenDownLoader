@@ -34,6 +34,17 @@ public class DownTaskInfo {
     public boolean isFinish;
 
 
+    private long speed;
+
+
+    public long getSpeed() {
+        return speed;
+    }
+
+    public void setSpeed(long speed) {
+        this.speed = speed;
+    }
+
     public Object holder;
 
 

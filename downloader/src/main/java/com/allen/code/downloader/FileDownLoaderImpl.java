@@ -131,7 +131,7 @@ public class FileDownLoaderImpl extends FileDownloadListener implements IDownLoa
     protected void pending(BaseDownloadTask task, int soFarBytes, int totalBytes) {
         for (int i = 0; i < listenerCount; i++) {
             DownLoaderListener listener = getDownLoaderListener(i);
-            listener.onWait(get(task), soFarBytes, totalBytes);
+            listener.onWait(convert(task), soFarBytes, totalBytes);
         }
     }
 
@@ -140,7 +140,7 @@ public class FileDownLoaderImpl extends FileDownloadListener implements IDownLoa
     protected void progress(BaseDownloadTask task, int soFarBytes, int totalBytes) {
         for (int i = 0; i < listenerCount; i++) {
             DownLoaderListener listener = getDownLoaderListener(i);
-            listener.onProgress(get(task), soFarBytes, totalBytes);
+            listener.onProgress(convert(task), soFarBytes, totalBytes);
         }
     }
 
@@ -151,7 +151,7 @@ public class FileDownLoaderImpl extends FileDownloadListener implements IDownLoa
         dao.udpate(info);
         for (int i = 0; i < listenerCount; i++) {
             DownLoaderListener listener = getDownLoaderListener(i);
-            listener.onFinish(get(task));
+            listener.onFinish(convert(task));
         }
     }
 
@@ -159,7 +159,7 @@ public class FileDownLoaderImpl extends FileDownloadListener implements IDownLoa
     protected void paused(BaseDownloadTask task, int soFarBytes, int totalBytes) {
         for (int i = 0; i < listenerCount; i++) {
             DownLoaderListener listener = getDownLoaderListener(i);
-            listener.onPause(get(task), soFarBytes, totalBytes);
+            listener.onPause(convert(task), soFarBytes, totalBytes);
         }
     }
 
@@ -167,7 +167,7 @@ public class FileDownLoaderImpl extends FileDownloadListener implements IDownLoa
     protected void error(BaseDownloadTask task, Throwable e) {
         for (int i = 0; i < listenerCount; i++) {
             DownLoaderListener listener = getDownLoaderListener(i);
-            listener.onError(get(task), e);
+            listener.onError(convert(task), e);
         }
     }
 
@@ -175,13 +175,14 @@ public class FileDownLoaderImpl extends FileDownloadListener implements IDownLoa
     protected void warn(BaseDownloadTask task) {
         for (int i = 0; i < listenerCount; i++) {
             DownLoaderListener listener = getDownLoaderListener(i);
-            listener.onError(get(task), new Throwable());
+            listener.onError(convert(task), new Throwable());
         }
     }
 
-    private DownTaskInfo get(BaseDownloadTask task) {
+    private DownTaskInfo convert(BaseDownloadTask task) {
         DownTaskInfo info = downTasks.get(task.getUrl().hashCode());
         setStatus(info, task);
+        info.setSpeed(task.getSpeed());
         return info;
     }
 

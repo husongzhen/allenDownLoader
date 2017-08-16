@@ -119,7 +119,7 @@ public class DownAdapter extends CodeSuperRecyclerAdapter<DownTaskInfo> implemen
         }
 
         int progress = (int) (soFarBytes / (totalBytes * 1f) * 100);
-        query.id(R.id.progress).text(progress + "");
+        query.id(R.id.progress).text(progress + " , speed = " + tag.getSpeed());
         setStatus(query, tag);
     }
 
