@@ -31,39 +31,6 @@ public class DownAdapter extends CodeSuperRecyclerAdapter<DownTaskInfo> implemen
         query.id(R.id.button).setTag(info).click(this);
     }
 
-    private void setStatus(CodeQuery query, DownTaskInfo info) {
-        switch (info.status) {
-            case AllenDownStatus.start:
-                query.id(R.id.status).text("start");
-                query.id(R.id.button).text("start");
-                break;
-
-            case AllenDownStatus.pause:
-                query.id(R.id.status).text("pause");
-                query.id(R.id.button).text("pause");
-                break;
-
-            case AllenDownStatus.wait:
-                query.id(R.id.status).text("wait");
-                query.id(R.id.button).text("wait");
-                break;
-
-            case AllenDownStatus.progress:
-                query.id(R.id.status).text("progress");
-                query.id(R.id.button).text("loading");
-                break;
-
-            case AllenDownStatus.finish:
-                query.id(R.id.status).text("finish");
-                query.id(R.id.button).text("finish");
-                break;
-
-            case AllenDownStatus.error:
-                query.id(R.id.status).text("errors");
-                query.id(R.id.button).text("start");
-                break;
-        }
-    }
 
     @Override
     protected CodeQuery onCreateView(View parent, int p) {
@@ -148,6 +115,42 @@ public class DownAdapter extends CodeSuperRecyclerAdapter<DownTaskInfo> implemen
             return;
         }
         setStatus(query, tag);
+    }
+
+
+
+    private void setStatus(CodeQuery query, DownTaskInfo info) {
+        switch (info.status) {
+            case AllenDownStatus.start:
+                query.id(R.id.status).text("start");
+                query.id(R.id.button).text("start");
+                break;
+
+            case AllenDownStatus.pause:
+                query.id(R.id.status).text("pause");
+                query.id(R.id.button).text("pause");
+                break;
+
+            case AllenDownStatus.wait:
+                query.id(R.id.status).text("wait");
+                query.id(R.id.button).text("wait");
+                break;
+
+            case AllenDownStatus.progress:
+                query.id(R.id.status).text("progress");
+                query.id(R.id.button).text("loading");
+                break;
+
+            case AllenDownStatus.finish:
+                query.id(R.id.status).text("finish");
+                query.id(R.id.button).text("finish");
+                break;
+
+            case AllenDownStatus.error:
+                query.id(R.id.status).text("errors");
+                query.id(R.id.button).text("start");
+                break;
+        }
     }
 
 

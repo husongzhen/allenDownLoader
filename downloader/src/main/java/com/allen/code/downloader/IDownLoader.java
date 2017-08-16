@@ -24,4 +24,8 @@ public interface IDownLoader {
 
     void cancleTask(String tag, DownTaskInfo info);
 
+
+    void exit();
+
+
 }

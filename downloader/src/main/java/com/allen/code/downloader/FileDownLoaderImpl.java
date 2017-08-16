@@ -71,7 +71,6 @@ public class FileDownLoaderImpl extends FileDownloadListener implements IDownLoa
         task.start();
         taskSparseArray.put(tag.hashCode(), task);
         dao.save(info);
-
     }
 
 
@@ -120,9 +119,17 @@ public class FileDownLoaderImpl extends FileDownloadListener implements IDownLoa
         BaseDownloadTask task = taskSparseArray.get(tag.hashCode());
         if (CodeCheck.isNotNull(task)) {
             task.pause();
+            FileDownloader.getImpl().clear(task.getId(), task.getTargetFilePath());
             taskSparseArray.remove(task.getUrl().hashCode());
             dao.delete(info);
         }
+    }
+
+    @Override
+    public void exit() {
+
+        FileDownloader.getImpl().pauseAll();
+        FileDownloader.getImpl().unBindServiceIfIdle();
     }
 
 
