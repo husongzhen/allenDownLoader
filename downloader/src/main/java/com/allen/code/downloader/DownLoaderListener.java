@@ -6,7 +6,6 @@ package com.allen.code.downloader;
  */
 
 public interface DownLoaderListener {
-    void onStart();
 
     void onWait(DownTaskInfo tag, int downsize, int totalSize);
 

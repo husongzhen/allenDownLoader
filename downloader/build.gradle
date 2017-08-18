@@ -6,7 +6,7 @@ android {
     buildToolsVersion "26.0.0"
 
     defaultConfig {
-        minSdkVersion 19
+        minSdkVersion 14
         targetSdkVersion 26
         versionCode 1
         versionName "1.0"
@@ -22,16 +22,32 @@ android {
 }
 
 
+
+apply plugin: 'maven'
+
+uploadArchives {
+    repositories {
+        mavenDeployer {
+            repository(url: "file://localhost/" + System.getenv("ANDROID_HOME")
+                    + "/extras/android/m2repository/")
+            pom.version = '1.0-SNAPSHOT'
+            pom.groupId = 'com.allen.code.downloader'
+            pom.artifactId = 'downloader'
+        }
+    }
+}
+
+
 def dbflow_version = "4.0.5"
 def sqlcipher_version = "3.5.7"
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
-    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
-        exclude group: 'com.android.support', module: 'support-annotations'
-    })
-    compile 'com.android.support:appcompat-v7:26.+'
-    testCompile 'junit:junit:4.12'
+//    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
+//        exclude group: 'com.android.support', module: 'support-annotations'
+//    })
+//    compile 'com.android.support:appcompat-v7:26.+'
+//    testCompile 'junit:junit:4.12'
     compile 'com.liulishuo.filedownloader:library:1.6.3'
 
 
@@ -65,4 +81,11 @@ dependencies {
 
     // RXJava 2 Kotlin Extensions Support
 //    compile "com.github.Raizlabs.DBFlow:dbflow-rx2-kotlinextensions:${dbflow_version}"
+
+
+
+
+
+
+
 }

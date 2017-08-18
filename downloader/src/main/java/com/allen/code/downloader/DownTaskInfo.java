@@ -18,7 +18,7 @@ import java.io.File;
 
 @Table(database = AppDatabase.class)
 public class DownTaskInfo {
-    private String dir = FileDownloadUtils.getDefaultSaveRootPath() + File.separator + "downloader";
+    private String dir = FileDownloadUtils.getDefaultSaveRootPath() + File.separator + "com/allen/code/downloader";
     @PrimaryKey
     @Unique(unique = true)
     public String id;
@@ -33,6 +33,25 @@ public class DownTaskInfo {
     @Column
     public boolean isFinish;
 
+
+    private long soFarBytes;
+    private long totalBytes;
+
+    public long getSoFarBytes() {
+        return soFarBytes;
+    }
+
+    public void setSoFarBytes(long soFarBytes) {
+        this.soFarBytes = soFarBytes;
+    }
+
+    public long getTotalBytes() {
+        return totalBytes;
+    }
+
+    public void setTotalBytes(long totalBytes) {
+        this.totalBytes = totalBytes;
+    }
 
     private long speed;
 

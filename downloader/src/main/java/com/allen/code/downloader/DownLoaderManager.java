@@ -5,6 +5,7 @@ import android.content.Context;
 
 import com.liulishuo.filedownloader.FileDownloader;
 import com.liulishuo.filedownloader.connection.FileDownloadUrlConnection;
+import com.raizlabs.android.dbflow.config.FlowManager;
 
 import java.net.Proxy;
 
@@ -37,6 +38,7 @@ public class DownLoaderManager {
 
     public static void initDownLoader(Application context) {
         // just for open the log in this demo project.
+        FlowManager.init(context);
 
         /**
          * just for cache Application's Context, and ':filedownloader' progress will NOT be launched

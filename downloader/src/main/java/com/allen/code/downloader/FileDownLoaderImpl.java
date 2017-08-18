@@ -67,15 +67,30 @@ public class FileDownLoaderImpl extends FileDownloadListener implements IDownLoa
                 .setWifiRequired(true)
                 .setTag(info)
                 .setListener(this);
-        setStatus(info, task);
+        convertData(info, task);
         task.start();
         taskSparseArray.put(tag.hashCode(), task);
         dao.save(info);
     }
 
 
-    private void setStatus(DownTaskInfo info, BaseDownloadTask task) {
+    private void convertData(DownTaskInfo info, BaseDownloadTask task) {
+        convertStatus(info, task);
+        convertSpeed(info, task);
+        convertSize(info, task);
+    }
 
+    private void convertSpeed(DownTaskInfo info, BaseDownloadTask task) {
+        info.setSpeed(task.getSpeed());
+    }
+
+
+    private void convertSize(DownTaskInfo info, BaseDownloadTask task) {
+        info.setSoFarBytes(task.isLargeFile() ? task.getLargeFileSoFarBytes() : task.getSmallFileSoFarBytes());
+        info.setTotalBytes(task.isLargeFile() ? task.getLargeFileTotalBytes() : task.getSmallFileTotalBytes());
+    }
+
+    private void convertStatus(DownTaskInfo info, BaseDownloadTask task) {
         switch (task.getStatus()) {
             case FileDownloadStatus.pending:
             case FileDownloadStatus.retry:
@@ -127,7 +142,6 @@ public class FileDownLoaderImpl extends FileDownloadListener implements IDownLoa
 
     @Override
     public void exit() {
-
         FileDownloader.getImpl().pauseAll();
         FileDownloader.getImpl().unBindServiceIfIdle();
     }
@@ -136,9 +150,10 @@ public class FileDownLoaderImpl extends FileDownloadListener implements IDownLoa
     //    listener
     @Override
     protected void pending(BaseDownloadTask task, int soFarBytes, int totalBytes) {
+
         for (int i = 0; i < listenerCount; i++) {
             DownLoaderListener listener = getDownLoaderListener(i);
-            listener.onWait(convert(task), soFarBytes, totalBytes);
+            listener.onWait(convertStatus(task), soFarBytes, totalBytes);
         }
     }
 
@@ -147,7 +162,7 @@ public class FileDownLoaderImpl extends FileDownloadListener implements IDownLoa
     protected void progress(BaseDownloadTask task, int soFarBytes, int totalBytes) {
         for (int i = 0; i < listenerCount; i++) {
             DownLoaderListener listener = getDownLoaderListener(i);
-            listener.onProgress(convert(task), soFarBytes, totalBytes);
+            listener.onProgress(convertStatus(task), soFarBytes, totalBytes);
         }
     }
 
@@ -158,7 +173,7 @@ public class FileDownLoaderImpl extends FileDownloadListener implements IDownLoa
         dao.udpate(info);
         for (int i = 0; i < listenerCount; i++) {
             DownLoaderListener listener = getDownLoaderListener(i);
-            listener.onFinish(convert(task));
+            listener.onFinish(convertStatus(task));
         }
     }
 
@@ -166,7 +181,7 @@ public class FileDownLoaderImpl extends FileDownloadListener implements IDownLoa
     protected void paused(BaseDownloadTask task, int soFarBytes, int totalBytes) {
         for (int i = 0; i < listenerCount; i++) {
             DownLoaderListener listener = getDownLoaderListener(i);
-            listener.onPause(convert(task), soFarBytes, totalBytes);
+            listener.onPause(convertStatus(task), soFarBytes, totalBytes);
         }
     }
 
@@ -174,7 +189,7 @@ public class FileDownLoaderImpl extends FileDownloadListener implements IDownLoa
     protected void error(BaseDownloadTask task, Throwable e) {
         for (int i = 0; i < listenerCount; i++) {
             DownLoaderListener listener = getDownLoaderListener(i);
-            listener.onError(convert(task), e);
+            listener.onError(convertStatus(task), e);
         }
     }
 
@@ -182,14 +197,13 @@ public class FileDownLoaderImpl extends FileDownloadListener implements IDownLoa
     protected void warn(BaseDownloadTask task) {
         for (int i = 0; i < listenerCount; i++) {
             DownLoaderListener listener = getDownLoaderListener(i);
-            listener.onError(convert(task), new Throwable());
+            listener.onError(convertStatus(task), new Throwable());
         }
     }
 
-    private DownTaskInfo convert(BaseDownloadTask task) {
+    private DownTaskInfo convertStatus(BaseDownloadTask task) {
         DownTaskInfo info = downTasks.get(task.getUrl().hashCode());
-        setStatus(info, task);
-        info.setSpeed(task.getSpeed());
+        convertData(info, task);
         return info;
     }
 
