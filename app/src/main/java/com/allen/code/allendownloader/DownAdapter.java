@@ -62,11 +62,6 @@ public class DownAdapter extends CodeSuperRecyclerAdapter<DownTaskInfo> implemen
 
 
     @Override
-    public void onStart() {
-
-    }
-
-    @Override
     public void onWait(DownTaskInfo tag, int downsize, int totalSize) {
         CodeQuery query = (CodeQuery) tag.holder;
         if (!CodeCheck.isNotNull(query)) {

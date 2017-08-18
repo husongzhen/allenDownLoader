@@ -10,6 +10,8 @@ import com.allen.code.downloader.DownTaskInfo;
 
 import java.util.List;
 
+import hugo.weaving.DebugLog;
+
 import static com.allen.code.downloader.DownLoaderManager.news;
 
 public class ScrollingActivity extends AppCompatActivity {
@@ -18,10 +20,14 @@ public class ScrollingActivity extends AppCompatActivity {
     private RecyclerView listView;
     private DownAdapter adapter;
 
+
+    @DebugLog
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_scrolling);
+
+
         adapter = new DownAdapter(this);
         listView = (RecyclerView) findViewById(R.id.listview);
         listView.setLayoutManager(new LinearLayoutManager(this));
